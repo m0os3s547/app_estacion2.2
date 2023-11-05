@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Estaciones Meteorológicas</title>
+<style>
+    /* Estilos CSS para el diseño creativo */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+        text-align: center;
+        color: #007bff;
+    }
+
+    .estacion-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        margin: 20px 0;
+        text-align: center;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+    }
+
+    .estacion-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .estacion-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+</style>
+
+</head>
+<body>
+    <center><h1>Panel de Estaciones Meteorológicas</h1></center>
+    <div id="estaciones-list"></div>
+
+    <template id="estacion-template">
+        <div class="estacion-card">
+            <h2>Estación <span class="chipid"></span></h2>
+            <p>Ubicación: <span class="ubicacion"></span></p>
+            <p>Visitas: <span class="visitas"></span></p>
+            <button class="estacion-button">Ver Detalles</button>
+        </div>
+    </template>
+
+    <script>
+        // Obtener la lista de estaciones meteorológicas desde la API
+        async function obtenerEstaciones() {
+            try {
+                const response = await fetch('https://mattprofe.com.ar/proyectos/app-estacion/datos.php?mode=list-stations');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error al obtener las estaciones:', error);
+                return [];
+            }
+        }
+
+        // Renderizar las estaciones en el panel
+        async function renderizarEstaciones() {
+            const estacionesList = document.getElementById('estaciones-list');
+            const estacionTemplate = document.getElementById('estacion-template');
+
+            const estaciones = await obtenerEstaciones();
+
+            estaciones.forEach(estacion => {
+                const estacionClone = document.importNode(estacionTemplate.content, true);
+
+                estacionClone.querySelector('.chipid').textContent = estacion.chipid;
+                estacionClone.querySelector('.ubicacion').textContent = estacion.ubicacion;
+                estacionClone.querySelector('.visitas').textContent = estacion.visitas;
+                
+                estacionClone.querySelector('.estacion-button').addEventListener('click', () => {
+                    // Redirigir a la página de detalle con el chipid de la estación seleccionada
+                    window.location.href = `detalle.php?chipid=${estacion.chipid}`;
+                });
+
+                estacionesList.appendChild(estacionClone);
+            });
+        }
+
+        // Iniciar la renderización de estaciones cuando se cargue la página
+        window.addEventListener('load', () => {
+            renderizarEstaciones();
+        });
+    </script>
+</body>
+</html>
