@@ -1,29 +1,51 @@
 <?php
-// Comprobar si "chipid" se pasa a través de la URL
+require_once('./Models/estacionModel.php');
+require_once('./lib/enginetpl.php');
+
+// Verificar si "chipid" se pasa a través de la URL
 if (isset($_GET['chipid'])) {
-    $chipid = $_GET['chipid'];
+    $chipid = filter_input(INPUT_GET, 'chipid', FILTER_SANITIZE_STRING);
 
-    // Cargar el modelo necesario si es aplicable
-    include '../Models/estacionModel.php'; // Asegúrate de que el nombre del modelo sea correcto
+    // Obtener información de la estación por chipid utilizando la función del modelo
+// ... (código previo)
 
-    // Lógica para obtener los datos de la estación específica desde el modelo
-    $estacion = obtenerEstacionPorChipid($chipid); // Define esta función en tu modelo
+// Obtener información de la estación por chipid utilizando la función del modelo
+$estacion = obtenerEstacionPorChipid($chipid);
 
-    // Cargar la plantilla del motor de plantillas
-    $template = new EngineTpl('../Views/detalleView.html'); // Ruta correcta a tu plantilla
+// Verificar si la estación existe
+if ($estacion) {
+    // Crear la instancia del motor de plantillas
+   $tpl = new EngineTpl('./Views/detalleView.html');
 
-    // Asignar variables a la plantilla si es necesario
-    $template->assignVar('apodo', $estacion['apodo']);
-    $template->assignVar('ubicacion', $estacion['ubicacion']);
-    $template->assignVar('visitas', $estacion['visitas']);
+// Asignar la variable 'chipid' a la plantilla
+$tpl->assignVar('chipid', $chipid);
 
-    // Imprimir la plantilla en pantalla
-    $template->printToScreen();
-} else {
-    // Manejar el caso en el que "chipid" no se pasó a través de la URL
-        header("Location: ../Views/error404View.html");
-    exit();
-    // Puede redirigir al usuario a una página de error o tomar otra acción adecuada.
+// Asignar otras variables según sea necesario
+if (isset($estacion['apodo'])) {
+    $tpl->assignVar('apodo', $estacion['apodo']);
 }
 
+if (isset($estacion['ubicacion'])) {
+    $tpl->assignVar('ubicacion', $estacion['ubicacion']);
+}
+
+if (isset($estacion['visitas'])) {
+    $tpl->assignVar('visitas', $estacion['visitas']);
+}
+
+// Imprimir la plantilla en pantalla
+$tpl->printToScreen();
+} else {
+    // Manejar el caso en el que no se encontró la estación
+    header("Location: ./Views/error404View.html");
+    exit();
+}
+
+// ... (código posterior)
+
+} else {
+    // Manejar el caso en el que "chipid" no se pasó a través de la URL
+    header("Location: ./Views/error404View.html");
+    exit();
+}
 ?>
