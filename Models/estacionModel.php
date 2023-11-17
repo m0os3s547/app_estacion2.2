@@ -1,56 +1,37 @@
 <?php
-require_once('../env.php');
+require_once('./env.php');
 
 // Función para obtener la lista de todas las estaciones
 function obtenerEstaciones() {
-    // Establece la conexión a la base de datos usando las constantes definidas en env.php
-    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    $url = "https://mattprofe.com.ar/proyectos/app-estacion/datos.php?chipid=${chipid}&cant=7"; // URL de la API
 
-    if ($mysqli->connect_error) {
-        die("Error de conexión a la base de datos: " . $mysqli->connect_error);
+    // Realiza una solicitud GET a la API
+    $response = file_get_contents($url);
+
+    if ($response === false) {
+        die("Error al obtener datos de la API.");
     }
 
-    $query = "SELECT * FROM estaciones";
-    $result = $mysqli->query($query);
+    // Decodifica la respuesta JSON
+    $estaciones = json_decode($response, true);
 
-    if ($result) {
-        $estaciones = [];
-        while ($row = $result->fetch_assoc()) {
-            $estaciones[] = $row;
-        }
-        // Cierra la conexión a la base de datos
-        $mysqli->close();
-        return $estaciones;
-    } else {
-        // Cierra la conexión a la base de datos
-        $mysqli->close();
-        return [];
-    }
+    return $estaciones;
 }
 
 // Función para obtener información de una estación específica por su chipid
 function obtenerEstacionPorChipid($chipid) {
-    // Establece la conexión a la base de datos usando las constantes definidas en env.php
-    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    $url = "https://mattprofe.com.ar/proyectos/app-estacion/datos.php?chipid=${chipid}&cant=7"; // URL de la API
 
-    if ($mysqli->connect_error) {
-        die("Error de conexión a la base de datos: " . $mysqli->connect_error);
+    // Realiza una solicitud GET a la API
+    $response = file_get_contents($url);
+
+    if ($response === false) {
+        die("Error al obtener datos de la API.");
     }
 
-    $chipid = $mysqli->real_escape_string($chipid);
+    // Decodifica la respuesta JSON
+    $estacion = json_decode($response, true);
 
-    $query = "SELECT * FROM estaciones WHERE chipid = '$chipid'";
-    $result = $mysqli->query($query);
-
-    if ($result && $result->num_rows > 0) {
-        $estacion = $result->fetch_assoc();
-    } else {
-        $estacion = null;
-    }
-
-    // Cierra la conexión a la base de datos
-    $mysqli->close();
     return $estacion;
 }
-
 ?>
