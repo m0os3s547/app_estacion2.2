@@ -1,3 +1,5 @@
+Options -Indexes
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.php?seccion=$1
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?seccion=$1 [L,QSA]
