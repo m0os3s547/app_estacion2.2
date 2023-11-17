@@ -1,9 +1,7 @@
-<?php
-include '../lib/enginetpl.php';
+<?php 
 
-// Cargar la plantilla del motor de plantillas
-$template = new EngineTpl('../Views/error404View.html'); // Ruta correcta a tu plantilla
+	$tpl = new EngineTpl('./Views/error404View.html');
 
-// Imprimir la plantilla en pantalla
-$template->printToScreen();
-?>
+	$tpl->printToScreen();
+
+ ?>
