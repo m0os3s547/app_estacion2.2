@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estación Meteorológica</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        * {
+                * {
             margin: 0rem;
             padding: 0rem;
             box-sizing: border-box;
             font-family: sans-serif;
         }
-
         main {
             display: flex;
             flex-direction: column;
@@ -55,42 +56,197 @@
             text-align: center;
             color: rgb(102, 102, 102);
         }
+        * {
+            margin: 0rem;
+            padding: 0rem;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #monitor {
+            border: solid 1px silver;
+            width: 300px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        #monitor-container {
+            margin: 1rem;
+        }
+
+        .caja {
+            margin-bottom: 0.5rem;
+        }
+
+        .caja-valor {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: solid 1px silver;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .caja-valor img {
+            margin-right: 10px;
+            width: 25px;
+            height: 25px;
+        }
+
+        .temperatura-label {
+            font-size: 24px;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Estación Meteorológica</h1>
-    </header>
-    <main>
-        <!-- Contenedor del monitor instantáneo -->
-        <div id="monitor">
-            <div id="monitor-container">
-                <div class="caja">
-                    <div class="caja-title">
-                        TEMPERATURA
-                    </div>
-                    <div id="temperatura" class="caja-valor">
-                        20 °C <!-- Contenido inicial de temperatura -->
-                    </div>
+        <div id="chipid"> {{chipid}}</div>
+    <h1>Estación Meteorológica</h1>
+<button>
+    <div id="temperatura-button5" onmouseover="resaltarTemperatura5()" onmouseout="restaurarTemperatura5()">
+        <a href="{{URL_APP}}/panel">ir a panel</a>
+    </div>
+</button>
+
+
+</header>
+
+<main>
+    <div id="monitor">
+        <div id="monitor-container">
+            <div class="caja">
+                <div class="caja-title">
+                    TEMPERATURA
                 </div>
-                <div class="caja">
-                    <div class="caja-title">
-                        HUMEDAD
-                    </div>
-                    <div id="humedad" class="caja-valor">
-                        50% <!-- Contenido inicial de humedad -->
-                    </div>
+                <div id="temperatura" class="caja-valor">
+                    20 °C <!-- Contenido inicial de temperatura -->
+                </div>
+            </div>
+
+            <div class="caja">
+                <div class="caja-title">
+                    HUMEDAD
+                </div>
+                <div id="humedad" class="caja-valor">
+                    50% <!-- Contenido inicial de humedad -->
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Contenedor del gráfico -->
-        <div id="grafico-container">
-            <canvas id="grafico-temperatura" style="width: 100%; height: 100%;"></canvas>
-        </div>
-    </main>
+            <td>
+                <div id="grafico-container">
+                    <canvas id="grafico-temperatura" style="width: 100%; height: 100%;"></canvas>
+                </div>
+            </td>
+    <table>
+        <tr>
+            <td>
+                <div id="temperatura-button" class="caja-valor" onclick="cambiarGrafico('temperatura')" onmouseover="resaltarTemperatura()" onmouseout="restaurarTemperatura()">
+                    <img src="https://www.pngall.com/wp-content/uploads/2017/01/Temperature-PNG-Pic.png" alt="" width="25px" height="25px">
+                    <div id="temperatura1">
+                        20 °C <!-- Contenido inicial de temperatura -->
+                    </div>
+                </div>
+            </td>
+
+            <td>
+                <div  id="temperatura-button1" class="caja-valor" onclick="cambiarGrafico('humedad')" onmouseover="resaltarTemperatura1()" onmouseout="restaurarTemperatura1()">
+                    <img src="https://cdn-icons-png.flaticon.com/512/728/728093.png" alt="" width="25px" height="25px">
+                    <div id="humedad1">
+                        50% <!-- Contenido inicial de temperatura -->
+                    </div>
+                </div>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td>
+                <div  id="temperatura-button2" class="caja-valor" onclick="cambiarGrafico('viento')" onmouseover="resaltarTemperatura2()" onmouseout="restaurarTemperatura2()">
+                    <img src="https://images.vexels.com/media/users/3/240752/isolated/preview/df53479ab063adc1b7cf102f2547c388-icono-de-viento-que-sopla.png" alt="">
+                    <div id="viento">20 °C</div>
+                    <div id="veleta">indeterminado.</div>
+                </div>
+            </td>
+
+            <td>
+                <div  id="temperatura-button3" class="caja-valor" onclick="cambiarGrafico('presion')" onmouseover="resaltarTemperatura3()" onmouseout="restaurarTemperatura3()">
+                    <img src="https://cdn.pixabay.com/photo/2016/03/31/14/47/download-1292814_960_720.png" alt="" width="25px" height="25px">
+                    <div id="presion">20 °hPa <!-- Contenido inicial de temperatura --></div>
+                </div>
+            </td>
+        </tr>
+                <tr>
+
+            <td>
+<div id="temperatura-button4" class="caja-valor" onclick="cambiarGrafico('fuego')" onmouseover="resaltarTemperatura4()" onmouseout="restaurarTemperatura4()">
+    <img src="https://images.emojiterra.com/google/android-11/512px/1f525.png" alt="" width="25px" height="25px">
+    <div id="fuego">20 # <!-- Contenido inicial de temperatura --></div>
+</div>
+            </td>
+        </tr>
+    </table>
+</main>
 
     <script type="text/javascript">
+
+                function resaltarTemperatura() {
+            document.getElementById('temperatura-button').style.backgroundColor = 'lightblue';
+        }
+
+        // Función para restaurar el color original al alejar el mouse
+        function restaurarTemperatura() {
+            document.getElementById('temperatura-button').style.backgroundColor = '';
+        }
+                        function resaltarTemperatura1() {
+            document.getElementById('temperatura-button1').style.backgroundColor = 'lightblue';
+        }
+
+        // Función para restaurar el color original al alejar el mouse
+        function restaurarTemperatura1() {
+            document.getElementById('temperatura-button1').style.backgroundColor = '';
+        }
+                        function resaltarTemperatura2() {
+            document.getElementById('temperatura-button2').style.backgroundColor = 'lightblue';
+        }
+
+        // Función para restaurar el color original al alejar el mouse
+        function restaurarTemperatura2() {
+            document.getElementById('temperatura-button2').style.backgroundColor = '';
+        }
+                        function resaltarTemperatura3() {
+            document.getElementById('temperatura-button3').style.backgroundColor = 'lightblue';
+        }
+
+        // Función para restaurar el color original al alejar el mouse
+        function restaurarTemperatura3() {
+            document.getElementById('temperatura-button3').style.backgroundColor = '';
+        }
+                        function resaltarTemperatura4() {
+            document.getElementById('temperatura-button4').style.backgroundColor = 'lightblue';
+        }
+
+        // Función para restaurar el color original al alejar el mouse
+        function restaurarTemperatura4() {
+            document.getElementById('temperatura-button4').style.backgroundColor = '';
+        }
+                        function resaltarTemperatura5() {
+            document.getElementById('temperatura-button5').style.backgroundColor = 'lightblue';
+        }
+
+        // Función para restaurar el color original al alejar el mouse
+        function restaurarTemperatura5() {
+            document.getElementById('temperatura-button5').style.backgroundColor = '';
+        }
         // Función para obtener y mostrar los datos de la estación meteorológica
         async function fetchEstacionData() {
             try {
@@ -105,29 +261,101 @@
                 // Actualiza el contenido del elemento HTML con los nuevos datos
                 document.getElementById('temperatura').innerHTML = data[0].temperatura + ' °C';
                 document.getElementById('humedad').innerHTML = data[0].humedad + '%';
+                document.getElementById('temperatura1').innerHTML = data[0].temperatura + ' °C';
+                 document.getElementById('humedad1').innerHTML = data[0].humedad + '%';
+                 document.getElementById('viento').innerHTML = data[0].viento + ' Km/H';
+                document.getElementById('presion').innerHTML = data[0].presion + 'hPa';
+                document.getElementById('veleta').innerHTML = data[0].veleta + '.';
+                 document.getElementById('fuego').innerHTML = data[0].ffmc + '°f';
 
-                // Agrega lógica para crear y mostrar el gráfico de temperatura
-                // Puedes utilizar la biblioteca Chart.js para esto
-                const ctx = document.getElementById('grafico-temperatura').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: data.map(entry => entry.timestamp),
-                        datasets: [{
-                            label: 'Temperatura (°C)',
-                            data: data.map(entry => entry.temperatura),
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false
-                    }
-                });
             } catch (error) {
                 console.error('Error al obtener datos de la estación:', error);
             }
+        }
+     var ctxGraficoTemperatura = document.getElementById('grafico-temperatura').getContext('2d');
+    var graficoTemperatura;  // Variable para el gráfico
+    var opcionSeleccionada = 'temperatura';  // Variable para almacenar la opción actual
+
+    // Datos iniciales del gráfico
+    var datosGraficoTemperatura = {
+        labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5', 'Día 6', 'Día 7'],
+        datasets: [{
+            label: 'Temperatura (°C)',
+            data: [20, 22, 23, 21, 24, 19, 20], // Puedes reemplazar estos datos con los datos reales
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Opciones del gráfico
+    var opcionesGraficoTemperatura = {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+     function inicializarGrafico() {
+        graficoTemperatura = new Chart(ctxGraficoTemperatura, {
+            type: 'line',
+            data: datosGraficoTemperatura,
+            options: opcionesGraficoTemperatura
+        });
+    }
+
+    // Llamada a la función de inicialización al cargar la página
+    window.onload = function () {
+        inicializarGrafico();
+        fetchEstacionData();  // Llama a esta función al inicio para cargar datos iniciales
+    };
+
+    // Función para cambiar el gráfico según el botón presionado
+    function cambiarGrafico(opcion) {
+        opcionSeleccionada = opcion;
+
+        // Lógica para cambiar los datos del gráfico según la opción seleccionada
+        switch (opcionSeleccionada) {
+            case 'temperatura':
+                // Simula nuevos datos para temperatura
+                datosGraficoTemperatura.datasets[0].label =['Temperatura (°C)'];
+                datosGraficoTemperatura.datasets[0].data = [20, 22, 23, 21, 24, 19, 20];
+                break;
+            case 'humedad':
+                // Simula nuevos datos para temperatura
+                datosGraficoTemperatura.datasets[0].label =['humedad (%)'];
+                datosGraficoTemperatura.datasets[0].data = [25, 23, 22, 20, 19, 18, 21];
+                break;
+            case 'presion':
+                // Simula nuevos datos para temperatura
+                datosGraficoTemperatura.datasets[0].label =['presion (hPa)'];
+                datosGraficoTemperatura.datasets[0].data = [25, 23, 22, 20, 19, 18, 21];
+                break;
+            case 'viento':
+            datosGraficoTemperatura.datasets[0].label =['viento (km/h)'];
+                // Simula nuevos datos para temperatura
+                datosGraficoTemperatura.datasets[0].data = [0, 5, 10, 15, 20, 25, 30];
+                break;
+            case 'fuego':
+            datosGraficoTemperatura.datasets[0].label =['fuego (°f)'];
+                // Simula nuevos datos para temperatura
+                datosGraficoTemperatura.datasets[0].data = [50, 50, 50, 50, 50, 50, 50];
+                break;
+            // Agrega más casos según sea necesario
+        }
+
+        // Actualiza el gráfico con los nuevos datos
+        graficoTemperatura.update();
+    }
+
+
+    // Función para inicializar el gráfico
+
+
+
+        // Función para recargar la página cada 60 segundos
+        function reloadPage() {
+            location.reload();
         }
 
         // Ejecuta fetchEstacionData() inmediatamente
@@ -135,6 +363,9 @@
 
         // Ejecuta fetchEstacionData() cada 60 segundos
         setInterval(fetchEstacionData, 60000); // 60000 ms = 60 segundos
+
+        // Ejecuta reloadPage() cada 60 segundos
+        setInterval(reloadPage, 60000); // 60000 ms = 60 segundos
     </script>
 </body>
 </html>
